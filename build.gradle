@@ -31,11 +31,20 @@ sourceSets {
 }
 
 test {
+    // Use JUnit 4 runner
     useJUnit()
+
+    // Enable XML + HTML reports
+    reports {
+        junitXml.required = true   // ✅ ensures XML reports are generated
+        html.required = true
+    }
+
     testLogging {
         events "passed", "skipped", "failed"
         exceptionFormat "full"
     }
+
     finalizedBy jacocoTestReport
 }
 
@@ -46,7 +55,7 @@ jacoco {
 jacocoTestReport {
     dependsOn test
     reports {
-        xml.required = true
+        xml.required = true   // ✅ required for Codecov
         html.required = true
     }
 }
