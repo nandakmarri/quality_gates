@@ -1,0 +1,60 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://repo1.maven.org/maven2'
+    }
+}
+
+dependencies {
+    implementation 'org.gosu-lang.gosu:gosu-core-api:1.17.4'
+    implementation 'org.gosu-lang.gosu:gosu-core:1.17.4'
+    testImplementation 'org.gosu-lang.gosu:gosu-test-api:1.17.4'
+    testImplementation 'junit:junit:4.13.2'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/gosu']
+        }
+    }
+    test {
+        java {
+            srcDirs = ['src/test/gosu']
+        }
+    }
+}
+
+test {
+    useJUnit()
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full"
+    }
+    finalizedBy jacocoTestReport
+}
+
+jacoco {
+    toolVersion = "0.8.8"
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = true
+        html.required = true
+    }
+}
+
+jar {
+    manifest {
+        attributes(
+            'Main-Class': 'main.gosu.Calculator'
+        )
+    }
+}
